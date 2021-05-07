@@ -21,6 +21,6 @@ fun hook(player: Player) {
 
         entity.setInstance(player.instance!!, blockPosition.toPosition().add(.5, .25, .5))
 
-        entity.setPickupDelay(2, TimeUnit.SECOND)
+        entity.setPickupDelay(30, TimeUnit.TICK)
     }
 }
