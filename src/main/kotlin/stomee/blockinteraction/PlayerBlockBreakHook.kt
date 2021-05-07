@@ -1,9 +1,11 @@
 package stomee.blockinteraction
 
+import net.minestom.server.entity.ItemEntity
 import net.minestom.server.entity.Player
 import net.minestom.server.event.player.PlayerBlockBreakEvent
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
+import net.minestom.server.utils.time.TimeUnit
 import world.cepi.kstom.Manager
 import world.cepi.kstom.addEventCallback
 
@@ -15,6 +17,10 @@ fun hook(player: Player) {
                 ?: return@addEventCallback
         )
 
-        player.inventory.addItemStack(item)
+        val entity = ItemEntity(item, blockPosition.toPosition(), player.instance!!)
+
+        entity.setInstance(player.instance!!, blockPosition.toPosition())
+
+        entity.setPickupDelay(2, TimeUnit.SECOND)
     }
 }
