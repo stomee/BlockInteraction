@@ -17,7 +17,7 @@ fun hook(player: Player) {
                 ?: return@addEventCallback
         )
 
-        val entity = ItemEntity(item, blockPosition.toPosition(), player.instance!!)
+        val entity = ItemEntity(item, blockPosition.toPosition().add(.5, .5, .5), player.instance!!)
 
         entity.setInstance(player.instance!!, blockPosition.toPosition())
 
