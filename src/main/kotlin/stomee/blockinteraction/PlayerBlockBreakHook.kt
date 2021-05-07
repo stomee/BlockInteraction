@@ -17,9 +17,9 @@ fun hook(player: Player) {
                 ?: return@addEventCallback
         )
 
-        val entity = ItemEntity(item, blockPosition.toPosition().add(.5, .5, .5), player.instance!!)
+        val entity = ItemEntity(item, blockPosition.toPosition().add(.5, .25, .5), player.instance!!)
 
-        entity.setInstance(player.instance!!, blockPosition.toPosition())
+        entity.setInstance(player.instance!!, blockPosition.toPosition().add(.5, .25, .5))
 
         entity.setPickupDelay(2, TimeUnit.SECOND)
     }
