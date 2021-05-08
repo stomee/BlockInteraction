@@ -16,7 +16,7 @@ object EntryProcessor {
                 entry.getJSONArray("children")
                     .map { it as? JSONObject ?: return@map null }
                     .filterNotNull()
-                    .mapNotNull { process(it) }
+                    .mapNotNull(::process)
                     .flatten()
             }
             else -> return null
