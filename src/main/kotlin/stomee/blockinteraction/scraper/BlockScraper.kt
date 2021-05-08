@@ -1,18 +1,25 @@
-package stomee.blockinteraction
+package stomee.blockinteraction.scraper
 
 import net.minestom.server.instance.block.Block
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
-import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.io.path.Path
 import kotlin.io.path.div
 import kotlin.io.path.exists
 import kotlin.io.path.readText
 
+/**
+ * > https://minecraft.fandom.com/wiki/Loot_table
+ */
 object BlockScraper {
 
     val path = Path("minecraft_data/data/minecraft/loot_tables/blocks/")
+
+    fun getMaterialByName(name: String) = Material.values().firstOrNull { material ->
+        material.getName() == name
+    }
+
 
     fun grab(block: Block): List<ItemStack>? {
 
@@ -25,28 +32,17 @@ object BlockScraper {
         // get all pools this item has
         val pools = JSONObject(blockJSON.readText()).getJSONArray("pools") ?: return null
 
-        return pools.map { unCastedPool ->
+        return pools.asSequence().map { unCastedPool ->
 
             val pool = unCastedPool as? JSONObject ?: return@map listOf()
 
             val entries = pool.getJSONArray("entries") ?: return@map listOf()
-            entries.map entry@ {
-                val entry = it as? JSONObject ?: return@entry null
-
-                val type = entry.getString("type") ?: return@entry null
-
-                if (type != "minecraft:item") return@entry null
-
-                val item = entry.getString("name") ?: return@entry null
-
-                Material.values().firstOrNull { material ->
-                    material.getName() == item
-                } ?: return@entry null
-            }
+            return@map entries.map mapEntry@ { it as? JSONObject ?: return@map null }.mapNotNull(EntryProcessor::process)
         }
-            .flatten()
             .filterNotNull()
-            .map { ItemStack.of(it) }
+            .flatten()
+            .flatten()
+            .map { ItemStack.of(it) }.toList()
     }
 
 }

@@ -6,10 +6,9 @@ import net.minestom.server.event.player.PlayerBlockBreakEvent
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.item.ItemStack
-import net.minestom.server.item.Material
 import net.minestom.server.utils.BlockPosition
 import net.minestom.server.utils.time.TimeUnit
-import world.cepi.kstom.Manager
+import stomee.blockinteraction.scraper.BlockScraper
 import world.cepi.kstom.addEventCallback
 
 fun generateItem(item: ItemStack, position: BlockPosition, instance: Instance) {
